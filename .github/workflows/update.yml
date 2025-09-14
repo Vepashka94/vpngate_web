@@ -2,15 +2,21 @@ name: Update VPNGate Mirror
 
 on:
   schedule:
-    - cron: "0 * * * *"   # her sagatda
-  workflow_dispatch:       # el bilen işledip bilmek üçin
+    - cron: "0 * * * *"   # her sagatda işleýär
+  workflow_dispatch:       # el bilen başlap bilersiň
 
 jobs:
   update:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write   # repo mazmunyny üýtgetmäge rugsat berýär
+
     steps:
       - name: Repo almak
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: VPNGate sahypasyny göçürmek
         run: |
@@ -23,5 +29,3 @@ jobs:
           git add home.html
           git commit -m "Auto update home.html" || echo "No changes"
           git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
