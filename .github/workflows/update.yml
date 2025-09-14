@@ -1,25 +1,27 @@
-name: Update VPNGate Home
+name: Update VPNGate Mirror
 
 on:
   schedule:
-    - cron: "0 * * * *"  # her sagatda
-  workflow_dispatch:
+    - cron: "0 * * * *"   # her sagatda
+  workflow_dispatch:       # el bilen işledip bilmek üçin
 
 jobs:
-  update-home:
+  update:
     runs-on: ubuntu-latest
     steps:
       - name: Repo almak
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Täze sahypany almak
+      - name: VPNGate sahypasyny göçürmek
         run: |
           wget -O home.html https://www.vpngate.net/en/
 
-      - name: Commit & Push
+      - name: Commit we Push
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add home.html
-          git commit -m "Auto update home.html"
+          git commit -m "Auto update home.html" || echo "No changes"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
